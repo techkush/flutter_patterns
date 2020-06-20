@@ -9,7 +9,7 @@ class BlocCounterPage extends StatelessWidget {
     final CounterBloc counterBloc = BlocProvider.of<CounterBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Streams"),
+        title: Text("BLoC Pattern"),
       ),
       body: Center(
           child: Column(
@@ -24,7 +24,13 @@ class BlocCounterPage extends StatelessWidget {
                   '${snapshot.data}',
                   style: Theme.of(context).textTheme.display1,
                 );
-              })
+              }),
+          RaisedButton(
+            child: Text('Go to Streams Page'),
+            onPressed: (){
+              counterBloc.gotoPage(context);
+            },
+          )
         ],
       )),
       floatingActionButton: FloatingActionButton(
