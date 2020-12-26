@@ -18,45 +18,38 @@ class _BlocUserPageState extends State<BlocUserPage> {
       appBar: AppBar(
         title: Text("BLoC Pattern"),
       ),
-      body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              StreamBuilder<User>(
-                  stream: userBloc.outUser,
-                  //initialData: User.empty(),
-                  builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-                    if(snapshot.hasData){
-                      return Text(
-                        '${snapshot.data.name}',
-                        style: Theme.of(context).textTheme.display1,
-                      );
-                    }else{
-                      return CircularProgressIndicator();
-                    }
-                  }),
-              StreamBuilder<User>(
-                  stream: userBloc.outUser,
-                  initialData: User.empty(),
-                  builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-                    return TextField(
-                      onChanged: (value) => _newName =  value,
-                      decoration: InputDecoration(
-                        labelText: snapshot.data.name
-                      ),
-                    );
-                  }),
-              RaisedButton(
-                child: Text('Go to Streams Page'),
-                onPressed: (){
-                  //counterBloc.gotoPage(context);
-                },
-              )
-            ],
-          )),
+      body: StreamBuilder<User>(
+          stream: userBloc.outUser,
+          //initialData: User.empty(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '${snapshot.data.name}',
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  TextField(
+                    onChanged: (value) => _newName = value,
+                    decoration: InputDecoration(labelText: snapshot.data.name),
+                  ),
+                  RaisedButton(
+                    child: Text('Go to Streams Page'),
+                    onPressed: () {
+                      //counterBloc.gotoPage(context);
+                    },
+                  )
+                ],
+              ));
+            }else{
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          userBloc.updateName.add(_newName);
+          userBloc.updateName(_newName);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
